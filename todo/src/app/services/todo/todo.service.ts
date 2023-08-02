@@ -7,26 +7,30 @@ import { TodoList } from 'src/app/models/todo-list.models';
 })
 export class TodoService {
 
+  L_KEY_TODO_LIST = 'todo-list';
   todoListsArray: TodoList [] = [];
   constructor() {
-    const todoList = new TodoList('default');
-    todoList.todos.push(new TodoItem('some other defalu thing to do'));
-    todoList.todos.push(new TodoItem('some other thing to do'));
-
-    const todoList2 = new TodoList('work');
-    todoList2.todos.push(new TodoItem('some other work thing to do'));
-    todoList2.todos.push(new TodoItem('some other thing to do'));
-
-    const todoList3 = new TodoList('personnal');
-    todoList3.todos.push(new TodoItem('some other personnal thing to do'));
-    todoList3.todos.push(new TodoItem('some other thing to do'));
-
-    this.todoListsArray.push(todoList);
-    this.todoListsArray.push(todoList2);
-    this.todoListsArray.push(todoList3);
+    
    }
 
    getTodoLists() {
+    const todoListString = localStorage.getItem(this.L_KEY_TODO_LIST);
+    if (todoListString){
+      this.todoListsArray = JSON.parse(todoListString);
+    }else {
+      this.todoListsArray = [];
+    }
     return this.todoListsArray;
+   }
+
+   addList(listName){
+    this.todoListsArray.push(new TodoList(listName));
+    localStorage.setItem(this.L_KEY_TODO_LIST,JSON.stringify(this.todoListsArray));
+   }
+
+   addListItem(listId, itemName){
+    const listObject = this.todoListsArray.filter(listItem => listItem.id === listId)[0];
+    listObject.todos.push(new TodoItem(itemName));
+    localStorage.setItem(this.L_KEY_TODO_LIST, JSON.stringify(this.todoListsArray));
    }
 }

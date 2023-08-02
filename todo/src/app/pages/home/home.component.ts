@@ -25,5 +25,12 @@ export class HomeComponent implements OnInit{
   {
     this.selectedTodoList = todoList;
   }
+
+  onListAdded(){
+    if(this.todoListsArray.length === 1)
+    {
+      this.selectedTodoList = this.todoListsArray[0];
+    }
+  }
 }
 
